@@ -1,111 +1,196 @@
-import React, { useStat, useRef, useState } from "react";
-import { View, Text, StyleSheet, Dimensions, TextInput } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import Header from "../subscreen/Header";
-import { BorderlessButton } from "react-native-gesture-handler";
+import React, { useState, useRef } from "react";
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import * as Animatable from "react-native-animatable";
-export function Login() {
-  const [TextInput2Focussed, setTextInput2Focussed] = useState(false);
-  const TextInput1 = useRef(1);
-  const TextInput2 = useRef(2);
-  return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <View style={styles.iconBackground}>
-          <Feather
-            name="arrow-left"
-            color="white"
-            size={28}
-            onPress={() => {}}
-          />
-        </View>
-        <Header title="MY ACCOUNT" />
-      </View>
-      <View>
-        <Text style={styles.titleLogin}>Login</Text>
-      </View>
-      <View style={{ alignItems: "center", marginTop: 10 }}>
-        <Text style={styles.enter}>Please enter the email and password</Text>
-        <Text style={styles.enter}>registered with your account</Text>
-      </View>
-      <View>
-        <View style={{ marginTop: 20 }}>
-          <TextInput
-            style={styles.TextInput1}
-            placeholder="please enter your Email"
-            ref={TextInput1}
-          />
-        </View>
+import { Feather } from "@expo/vector-icons"; // Import Feather icons
+import Header from "../subscreen/Header.js";
+import { ScrollView } from "react-native-gesture-handler"; // Use the correct import for ScrollView
 
-        <View style={styles.TextInput2}>
-          <TextInput
-            // style={{width:"80%"}}
-            placeholder="please enter your Password"
-            ref={TextInput2}
-            onFocus={() => {
-              setTextInput2Focussed(false);
-            }}
-            onBlur={() => {
-              setTextInput2Focussed(true);
-            }}
-          />
-          <Animatable.View
-            animation={TextInput2Focussed ? "" : "fadeInLeft"}
-            duration={400}
-          >
-            <Feather
-              name="eye-off"
-              size={24}
-              color="black"
-              style={{ marginRight: 10 }}
-            />
-          </Animatable.View>
+export default function Login({ navigation }) {
+  const [textInput2Focused, setTextInput2Focused] = useState(false);
+  const textInput1 = useRef();
+  const textInput2 = useRef();
+  const handleFocus = () => setTextInput2Focused(true);
+  const handleBlur = () => setTextInput2Focused(false);
+  const handleForgotPassword = () => {};
+
+  return (
+    <SafeAreaView style={styles.safeContainer}>
+      <ScrollView>
+        <View>
+          <Header type="arrow-left" navigation={navigation} />
         </View>
-      </View>
-    </View>
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.welcome}>
+              Welcome to Queen Supermarket System
+            </Text>
+          </View>
+          <View style={styles.login}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Enter your username"
+              ref={textInput1}
+            />
+            <View style={styles.passwordContainer}>
+              {/* <Animatable.View
+                animation={textInput2Focused ? "" : "fadeInLeft"}
+                duration={400}
+              >
+                <Feather
+                  name="lock"
+                  size={24}
+                  color="grey"
+                  style={styles.icon}
+                />
+              </Animatable.View> */}
+              <TextInput
+                placeholder="Enter your password"
+                secureTextEntry
+                style={styles.textInputPass}
+                ref={textInput2}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+              />
+              <Animatable.View
+                animation={textInput2Focused ? "" : "fadeInLeft"}
+                duration={400}
+              >
+                <Feather
+                  name="eye-off"
+                  size={24}
+                  color="grey"
+                  style={styles.icon}
+                />
+              </Animatable.View>
+            </View>
+
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                navigation.navigate("Homepage");
+              }}
+            >
+              <Text style={styles.buttonText}>Log In</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleForgotPassword}>
+              <Text style={styles.text}>Forgot password?</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.googleButton}>
+              <Feather
+                name="log-in"
+                size={24}
+                color="white"
+                style={styles.googleIcon}
+              />
+              <Text style={styles.buttonText}>Sign in with Google</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.dontAcount}>
+            <Text style={styles.text}>Don't have an account? </Text>
+            <TouchableOpacity style={styles.signup}>
+              <Text style={styles.linkText}>Create Account</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
-{
-}
+
 const styles = StyleSheet.create({
+  safeContainer: {
+    flex: 1,
+    backgroundColor: "#f7f9fc",
+  },
   container: {
     flex: 1,
-  },
-  headerContainer: {
-    flexDirection: "row",
-    fontSize: 22,
-    fontWeight: "bold",
-  },
-  iconBackground: {
-    backgroundColor: "#ff8c52",
-  },
-  titleLogin: {
-    color: "#ff8c52",
-    size: 16,
-    fontWeight: "bold",
-    marginLeft: 30,
-  },
-  enter: {
-    color: "#bdc0c1",
-    fontSize: 16,
-  },
-  TextInput1: {
-    borderWidth: 1,
-    borderColor: "#86919e",
-    marginHorizontal: 20,
-    borderRadius: 12,
-    marginBottom: 20,
-    paddingLeft: 15,
-  },
-  TextInput2: {
-    borderWidth: 1,
-    borderRadius: 12,
-    marginHorizontal: 20,
-    borderColor: "#86919e",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignContent: "center",
+    justifyContent: "center",
     alignItems: "center",
-    paddingLeft: 15,
+    padding: 16,
+  },
+  welcome: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  login: {
+    width: "90%",
+  },
+  textInput: {
+    fontSize: 18,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "grey",
+    marginBottom: 15,
+    padding: 10,
+    backgroundColor: "white",
+  },
+  textInputPass: {
+    width: "100%",
+    fontSize: 18,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "grey",
+    marginBottom: 15,
+    padding: 15,
+    backgroundColor: "white",
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "grey",
+    marginBottom: 15,
+    backgroundColor: "white",
+  },
+  icon: {
+    marginHorizontal: 10,
+  },
+  button: {
+    backgroundColor: "hsl(23, 100%, 66%)",
+    padding: 15,
+    borderRadius: 5,
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  googleButton: {
+    backgroundColor: "hsl(261, 87%, 68%)",
+    borderRadius: 5,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    padding: 15,
+  },
+  googleIcon: {
+    marginRight: 10,
+  },
+  text: {
+    fontSize: 16,
+    textAlign: "center",
+    marginVertical: 10,
+  },
+  linkText: {
+    padding: "3%",
+    color: "white",
+    fontWeight: "bold",
+  },
+  dontAcount: {
+    margin: "5%",
+    alignItems: "center",
   },
 });

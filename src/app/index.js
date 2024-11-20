@@ -1,17 +1,16 @@
 import React from "react";
-import { View, Text, StyleSheet, StatusBar } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { Login } from "../screans/Login";
+import { SafeAreaView, StyleSheet, StatusBar } from "react-native";
+import RootNavigator from "../navigator/RootNavigator.js"; 
 
 export default function App() {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.safeContainer}>
       <StatusBar barStyle="light-content" backgroundColor={"#ff8c52"} />
-      <Login />
-    </View>
+      <RootNavigator /> 
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  safeContainer: { flex: 1 },
 });
